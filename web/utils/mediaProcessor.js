@@ -175,18 +175,28 @@ class MediaProcessor {
           spawnArgs.splice(spawnArgs.length - 2, 0, '--cookies', process.env.YTDLP_COOKIES_PATH);
         }
 
-        const process = spawn('yt-dlp', spawnArgs, { shell: false });
+        const child = spawn('yt-dlp', spawnArgs, { shell: false });
 
         let errorOutput = '';
-        process.stderr.on('data', (data) => {
-          errorOutput += data.toString();
-          const match = data.toString().match(/(\d+\.\d+)%/);
+        // Emit initial progress
+        try { onProgress(0); } catch (e) {}
+
+        child.stderr.on('data', (data) => {
+          const text = data.toString();
+          errorOutput += text;
+          // Match integer or decimal percentages like '12%' or '12.3%'
+          const match = text.match(/(\d+(?:\.\d+)?)%/);
           if (match) {
-            onProgress(parseFloat(match[1]));
+            try {
+              onProgress(parseFloat(match[1]));
+            } catch (e) {}
           }
         });
 
-        process.on('close', (code) => {
+        child.on('close', (code) => {
+          // Ensure we report completion progress
+          try { onProgress(100); } catch (e) {}
+
           if (code === 0) {
             const ext = format === 'mp3' ? 'mp3' : 'mp4';
             const outputFile = `${tempFile}.${ext}`;
@@ -198,6 +208,9 @@ class MediaProcessor {
           } else {
             reject(new Error(`yt-dlp failed: ${errorOutput}`));
           }
+        });
+        child.on('error', (err) => {
+          reject(new Error(`yt-dlp spawn error: ${err.message}`));
         });
       });
     } catch (error) {

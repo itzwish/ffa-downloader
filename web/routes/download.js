@@ -42,7 +42,12 @@ router.post('/start', async (req, res) => {
   // Start download in background
   mediaProcessor.downloadMedia(url, format, quality, (progress) => {
     const dl = activeDownloads.get(downloadId);
-    if (dl) dl.progress = progress;
+    if (dl) {
+      dl.progress = progress;
+      if (progress > 0 && dl.status !== 'downloading' && dl.status !== 'processing') {
+        dl.status = 'downloading';
+      }
+    }
   })
     .then((filePath) => {
       const dl = activeDownloads.get(downloadId);
