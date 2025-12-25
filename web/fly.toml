@@ -1,0 +1,43 @@
+app = "ytdownloader-web"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "3000"
+  NODE_ENV = "production"
+
+[processes]
+  web = "node server.js"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000
+  processes = ["web"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.http_checks]
+    enabled = true
+    grace_period = "40s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/health"
+    protocol = "http"
+    timeout = "10s"
+    tls_skip_verify = false
+
+[env]
+  TMPDIR = "/tmp"
+
+[[mounts]]
+path = "/tmp/ytdownloader"
+size_gb = 2

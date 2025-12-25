@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download videos and audio from YouTube and other platforms">
+    <title>YTDownloader - Web</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Set API URL from environment or use default
+        window.API_URL = process.env.REACT_APP_API_URL || window.location.origin;
+    </script>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-brand">
+                    <h1>📥 YTDownloader</h1>
+                </div>
+                <div class="navbar-menu">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <!-- Input Section -->
+            <section class="card">
+                <h2>Download Video or Audio</h2>
+                
+                <div class="input-group">
+                    <label for="urlInput">Video URL:</label>
+                    <input 
+                        type="url" 
+                        id="urlInput" 
+                        placeholder="https://www.youtube.com/watch?v=..." 
+                        required
+                    >
+                </div>
+
+                <div class="button-group">
+                    <button id="fetchInfoBtn" class="btn btn-primary">
+                        Get Video Info
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary">Clear</button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingInfo" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Fetching video information...</p>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMsg" class="error-message hidden"></div>
+            </section>
+
+            <!-- Video Info Section -->
+            <section id="infoSection" class="card hidden">
+                <h2>Video Information</h2>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <img id="thumbnail" src="" alt="Thumbnail" class="thumbnail">
+                    </div>
+                    <div class="info-details">
+                        <h3 id="videoTitle">-</h3>
+                        <p><strong>Uploader:</strong> <span id="videoUploader">-</span></p>
+                        <p><strong>Duration:</strong> <span id="videoDuration">-</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Format Selection Section -->
+            <section id="formatSection" class="card hidden">
+                <h2>Choose Format</h2>
+
+                <div class="format-tabs">
+                    <button class="tab-btn active" data-format="mp4">
+                        🎬 Video (MP4)
+                    </button>
+                    <button class="tab-btn" data-format="mp3">
+                        🎵 Audio (MP3)
+                    </button>
+                </div>
+
+                <!-- Video Format Options -->
+                <div id="videoOptions" class="format-options">
+                    <label>Select Quality:</label>
+                    <div id="videoQualityList" class="quality-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Audio Format Options -->
+                <div id="audioOptions" class="format-options hidden">
+                    <label>Select Quality:</label>
+                    <div id="audioQualityList" class="quality-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <button id="downloadBtn" class="btn btn-success" style="width: 100%; margin-top: 1rem;">
+                    📥 Start Download
+                </button>
+            </section>
+
+            <!-- Download Progress Section -->
+            <section id="progressSection" class="card hidden">
+                <h2>Download Progress</h2>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <p id="progressText" class="progress-text">0%</p>
+                </div>
+
+                <div id="downloadStatus" class="status-message"></div>
+
+                <div class="button-group">
+                    <button id="cancelBtn" class="btn btn-danger">Cancel Download</button>
+                    <button id="newDownloadBtn" class="btn btn-secondary" style="display: none;">
+                        New Download
+                    </button>
+                </div>
+            </section>
+
+            <!-- Download Complete Section -->
+            <section id="completeSection" class="card hidden">
+                <h2>✅ Download Complete!</h2>
+                
+                <p id="completionMessage" class="success-message"></p>
+
+                <div class="button-group">
+                    <a id="downloadLink" href="#" class="btn btn-success" download>
+                        📥 Download File
+                    </a>
+                    <button id="newDownload2Btn" class="btn btn-secondary">
+                        Download Another
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>YTDownloader Web • Made with ❤️</p>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Uses yt-dlp and FFmpeg for processing</p>
+        </footer>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
