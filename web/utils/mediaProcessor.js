@@ -64,7 +64,10 @@ class MediaProcessor {
   async getVideoInfo(url) {
     return new Promise((resolve, reject) => {
       try {
-        const command = `yt-dlp -j --no-warnings "${url}"`;
+        // If an environment variable points to a cookies file, pass it to yt-dlp
+        const cookiesPath = process.env.YTDLP_COOKIES_PATH;
+        const cookieArg = cookiesPath && existsSync(cookiesPath) ? ` --cookies "${cookiesPath}"` : '';
+        const command = `yt-dlp -j --no-warnings${cookieArg} "${url}"`;
         const output = execSync(command, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
         const info = JSON.parse(output);
         
@@ -140,17 +143,23 @@ class MediaProcessor {
     try {
       // Build yt-dlp command
       let command = `yt-dlp -f best --no-warnings`;
-      
+
       if (format === 'mp3') {
         command += ` -x --audio-format mp3 --audio-quality 192K -o "${tempFile}.%(ext)s"`;
       } else {
         command += ` -f "best[ext=mp4]" -o "${tempFile}.%(ext)s"`;
       }
-      
+
+      const cookiesPath = process.env.YTDLP_COOKIES_PATH;
+      if (cookiesPath && existsSync(cookiesPath)) {
+        command += ` --cookies "${cookiesPath}"`;
+      }
+
       command += ` "${url}"`;
 
       return new Promise((resolve, reject) => {
-        const process = spawn('yt-dlp', [
+        // Build spawn args (include cookies if available)
+        const spawnArgs = [
           '-f', format === 'mp3' ? 'bestaudio' : 'best[ext=mp4]',
           '--no-warnings',
           format === 'mp3' ? '-x' : '',
@@ -160,7 +169,13 @@ class MediaProcessor {
           format === 'mp3' ? '192K' : '',
           '-o', `${tempFile}.%(ext)s`,
           url
-        ].filter(Boolean), { shell: false });
+        ].filter(Boolean);
+
+        if (process.env.YTDLP_COOKIES_PATH && existsSync(process.env.YTDLP_COOKIES_PATH)) {
+          spawnArgs.splice(spawnArgs.length - 2, 0, '--cookies', process.env.YTDLP_COOKIES_PATH);
+        }
+
+        const process = spawn('yt-dlp', spawnArgs, { shell: false });
 
         let errorOutput = '';
         process.stderr.on('data', (data) => {
