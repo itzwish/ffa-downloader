@@ -5,16 +5,18 @@
 }
 
 :root {
-    --primary: #3b82f6;
-    --primary-dark: #2c5aa0;
+    --primary: #7c3aed; /* purple */
+    --primary-dark: #5b21b6;
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
     --secondary: #6b7280;
     
-    --bg-primary: #ffffff;
-    --bg-secondary: #f3f4f6;
-    --bg-tertiary: #e5e7eb;
+    --bg-primary: rgba(255,255,255,0.6);
+    --bg-secondary: rgba(255,255,255,0.08);
+    --bg-tertiary: rgba(255,255,255,0.04);
+    --page-bg-1: #0f172a;
+    --page-bg-2: #071124;
     
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
@@ -46,11 +48,12 @@ body.dark-mode {
 
 html, body {
     height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--bg-primary);
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.18), transparent 10%),
+                radial-gradient(1000px 500px at 90% 90%, rgba(16,185,129,0.06), transparent 10%),
+                linear-gradient(180deg, var(--page-bg-1), var(--page-bg-2));
     color: var(--text-primary);
     transition: background-color 0.3s, color 0.3s;
 }
@@ -69,10 +72,11 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
-    box-shadow: var(--shadow);
+    background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 1.1rem 0;
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6);
 }
 
 .navbar-container {
@@ -85,8 +89,11 @@ body {
 }
 
 .navbar-brand h1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .navbar-menu {
@@ -112,26 +119,27 @@ body {
 /* Main Container */
 .container {
     flex: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    width: 100%;
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 2rem 1.25rem;
+    width: 94%;
 }
 
 /* Card */
 .card {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 0.75rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1rem;
     padding: 2rem;
     margin-bottom: 1.5rem;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    backdrop-filter: blur(8px);
 }
 
 .card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #fff;
 }
 
 .card h3 {
@@ -165,20 +173,20 @@ body {
 .input-group input,
 .input-group select {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 0.75rem;
     font-size: 1rem;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: rgba(255,255,255,0.03);
+    color: #e6eef8;
+    transition: box-shadow 0.25s, transform 0.12s;
 }
 
 .input-group input:focus,
 .input-group select:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: rgba(124,58,237,0.9);
+    box-shadow: 0 6px 30px rgba(124,58,237,0.12);
 }
 
 /* Buttons */
@@ -189,13 +197,13 @@ body {
 }
 
 .btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.8rem 1.6rem;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: transform 0.12s ease, box-shadow 0.18s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -213,8 +221,9 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     color: white;
+    box-shadow: 0 8px 30px rgba(124,58,237,0.18);
 }
 
 .btn-primary:hover {
@@ -222,8 +231,9 @@ body {
 }
 
 .btn-secondary {
-    background-color: var(--secondary);
-    color: white;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    color: #cbd5e1;
+    border: 1px solid rgba(255,255,255,0.03);
 }
 
 .btn-secondary:hover {
@@ -231,8 +241,9 @@ body {
 }
 
 .btn-success {
-    background-color: var(--success);
+    background: linear-gradient(90deg, #06b6d4, #10b981);
     color: white;
+    box-shadow: 0 8px 30px rgba(16,185,129,0.12);
 }
 
 .btn-success:hover {
@@ -297,14 +308,14 @@ body {
 }
 
 .quality-btn {
-    padding: 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 0.5rem;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 0.75rem;
+    background: rgba(255,255,255,0.02);
+    color: #e6eef8;
     cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
+    font-weight: 700;
+    transition: transform 0.12s ease, box-shadow 0.18s ease;
 }
 
 .quality-btn:hover {
@@ -313,9 +324,10 @@ body {
 }
 
 .quality-btn.selected {
-    border-color: var(--primary);
-    background-color: var(--primary);
+    border-color: rgba(124,58,237,0.9);
+    background: linear-gradient(90deg, rgba(124,58,237,0.95), rgba(91,33,182,0.95));
     color: white;
+    box-shadow: 0 12px 40px rgba(124,58,237,0.18);
 }
 
 /* Info Section */
@@ -328,10 +340,14 @@ body {
 
 .thumbnail {
     width: 100%;
-    max-width: 300px;
+    max-width: 340px;
     height: auto;
     border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
+    border: 4px solid transparent;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)), linear-gradient(90deg, #7c3aed, #06b6d4);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 12px 40px rgba(2,6,23,0.6);
 }
 
 .info-details h3 {
@@ -355,11 +371,11 @@ body {
 }
 
 .spinner {
-    border: 3px solid var(--border-color);
-    border-top-color: var(--primary);
+    border: 3px solid rgba(255,255,255,0.06);
+    border-top-color: #7c3aed;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     animation: spin 0.8s linear infinite;
 }
 
@@ -370,10 +386,10 @@ body {
 /* Messages */
 .error-message {
     padding: 1rem;
-    background-color: #fee2e2;
-    border: 1px solid #fca5a5;
-    border-radius: 0.5rem;
-    color: #991b1b;
+    background-color: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.12);
+    border-radius: 0.6rem;
+    color: #fecaca;
     margin-bottom: 1rem;
 }
 
@@ -388,9 +404,9 @@ body {
 
 .status-message {
     padding: 1rem;
-    background-color: var(--bg-secondary);
-    border-radius: 0.5rem;
-    color: var(--text-secondary);
+    background: rgba(255,255,255,0.02);
+    border-radius: 0.6rem;
+    color: #cbd5e1;
     margin-bottom: 1rem;
     text-align: center;
 }
@@ -415,7 +431,7 @@ body.dark-mode .success-message {
 .progress-bar {
     width: 100%;
     height: 30px;
-    background-color: var(--bg-secondary);
+    background: rgba(255,255,255,0.03);
     border-radius: 0.5rem;
     overflow: hidden;
     border: 1px solid var(--border-color);
@@ -424,7 +440,7 @@ body.dark-mode .success-message {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--success));
+    background: linear-gradient(90deg, rgba(124,58,237,0.95), rgba(6,182,212,0.95));
     width: 0%;
     transition: width 0.3s ease;
     display: flex;
@@ -445,11 +461,10 @@ body.dark-mode .success-message {
 
 /* Footer */
 .footer {
-    background-color: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
-    padding: 1.5rem;
+    background: transparent;
+    padding: 2rem 0 4rem 0;
     text-align: center;
-    color: var(--text-secondary);
+    color: #94a3b8;
     font-size: 0.875rem;
     margin-top: auto;
 }
@@ -500,7 +515,7 @@ body.dark-mode .success-message {
     }
 
     .navbar-brand h1 {
-        font-size: 1.25rem;
+        font-size: 1.05rem;
     }
 }
 
